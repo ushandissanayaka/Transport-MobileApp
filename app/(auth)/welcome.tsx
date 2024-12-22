@@ -12,6 +12,7 @@ const Onboarding = () => {
   // Function to handle "Next" button click
   const handleNext = () => {
     if (swiperRef.current && activeIndex < onboarding.length - 1) {
+      // @ts-ignore
       swiperRef.current.scrollBy(1);
     } else {
       router.replace("/(auth)/sign-up"); // Navigate to sign-up on the last page
