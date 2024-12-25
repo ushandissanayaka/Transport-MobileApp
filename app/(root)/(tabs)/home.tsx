@@ -22,7 +22,7 @@ type Vehicle = {
 
 export default function Home() {
   const router = useRouter();
-  const { username } = useLocalSearchParams();
+  const { username } = useLocalSearchParams(); // Get the username from route params
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [cart, setCart] = useState<Vehicle[]>([]);
   const [favorites, setFavorites] = useState<number[]>([]);
@@ -93,7 +93,9 @@ export default function Home() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.welcomeText}>Welcome, {username || ""} 👋</Text>
+        <Text style={styles.welcomeText}>
+          Welcome, {username ? username : "Guest"} 👋
+        </Text>
       </View>
 
       <FlatList

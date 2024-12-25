@@ -7,28 +7,31 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: "Home",
+          title: "",
           tabBarIcon: ({ color }) => (
             <Ionicons name="home" size={24} color={color} />
           ),
+          headerShown: false, // Hide header on Home screen
         }}
       />
       <Tabs.Screen
         name="cart"
         options={{
-          title: "Cart",
+          title: "",
           tabBarIcon: ({ color }) => (
             <Ionicons name="cart" size={24} color={color} />
           ),
+          headerShown: false, // Hide header on Cart screen
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          title: "Profile",
+          title: "",
           tabBarIcon: ({ color }) => (
             <Ionicons name="person" size={24} color={color} />
           ),
+          headerShown: false, // Hide header on Profile screen
         }}
       />
     </Tabs>
