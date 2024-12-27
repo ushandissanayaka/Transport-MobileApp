@@ -1,49 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   FlatList,
   StyleSheet,
   TouchableOpacity,
+  Alert,
+  ImageBackground,
 } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 
 type CartItem = {
   id: number;
-  title: string;
+  make: string;
+  model: string;
   price: number;
-  description: string;
-  thumbnail: string;
 };
 
 export default function Cart() {
   const { cart } = useLocalSearchParams();
-  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-    return cart ? JSON.parse(cart as string) : [];
-  });
+  const [cartItems, setCartItems] = useState<CartItem[]>(() =>
+    cart ? JSON.parse(cart as string) : [],
+  );
 
-  // Function to handle item deletion
   const deleteItem = (itemId: number) => {
-    const updatedCart = cartItems.filter((item) => item.id !== itemId);
-    setCartItems(updatedCart);
-    // Optionally, update local storage or context with the updated cart
-  };
-
-  // Function to prevent adding duplicate items
-  const addItemToCart = (newItem: CartItem) => {
-    const existingItem = cartItems.find((item) => item.id === newItem.id);
-    if (!existingItem) {
-      const updatedCart = [...cartItems, newItem];
-      setCartItems(updatedCart);
-    } else {
-      // Optionally show a message that the item is already in the cart
-      console.log("Item is already in the cart");
-    }
+    Alert.alert(
+      "Confirm Delete",
+      "Are you sure you want to remove this item from your cart?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Yes",
+          onPress: () => {
+            const updatedCart = cartItems.filter((item) => item.id !== itemId);
+            setCartItems(updatedCart);
+          },
+        },
+      ],
+    );
   };
 
   const renderCartItem = ({ item }: { item: CartItem }) => (
     <View style={styles.cartItem}>
-      <Text style={styles.itemTitle}>{item.title}</Text>
+      <Text style={styles.itemTitle}>
+        {item.make} {item.model}
+      </Text>
       <Text style={styles.itemPrice}>${item.price}</Text>
       <TouchableOpacity
         onPress={() => deleteItem(item.id)}
@@ -54,35 +55,36 @@ export default function Cart() {
     </View>
   );
 
-  useEffect(() => {
-    // This effect updates the cart in local storage or context if necessary
-    if (cartItems.length > 0) {
-      // Update cart (use context or local storage)
-      // localStorage.setItem('cart', JSON.stringify(cartItems)); // For example, in browser
-    }
-  }, [cartItems]);
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Your Cart</Text>
-      {cartItems.length > 0 ? (
-        <FlatList
-          data={cartItems}
-          renderItem={renderCartItem}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={styles.listContainer}
-        />
-      ) : (
-        <Text style={styles.emptyMessage}>Your cart is empty.</Text>
-      )}
-    </View>
+    <ImageBackground
+      source={require("../../../assets/images/cart.jpg")}
+      style={styles.backgroundImage}
+    >
+      <View style={styles.overlay}>
+        <Text style={styles.header}>Your Cart</Text>
+        {cartItems.length > 0 ? (
+          <FlatList
+            data={cartItems}
+            renderItem={renderCartItem}
+            keyExtractor={(item) => item.id.toString()}
+            contentContainerStyle={styles.listContainer}
+          />
+        ) : (
+          <Text style={styles.emptyMessage}>Your cart is empty.</Text>
+        )}
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  backgroundImage: {
     flex: 1,
-    backgroundColor: "#fff",
+    resizeMode: "cover",
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.6)", // Dark overlay to make the background darker
     padding: 16,
   },
   header: {
@@ -90,6 +92,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 16,
     textAlign: "center",
+    color: "#FFD700", // Yellow color for "Your Cart" text
   },
   listContainer: {
     paddingBottom: 16,
@@ -97,7 +100,7 @@ const styles = StyleSheet.create({
   cartItem: {
     padding: 16,
     marginBottom: 16,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "rgba(249, 249, 249, 0.8)", // Transparent background for the card
     borderRadius: 8,
     elevation: 2,
     shadowColor: "#000",
@@ -112,12 +115,12 @@ const styles = StyleSheet.create({
   },
   itemPrice: {
     fontSize: 16,
-    color: "#2ecc71",
+    color: "black",
   },
   emptyMessage: {
     fontSize: 18,
     textAlign: "center",
-    color: "#999",
+    color: "#fff",
     marginTop: 20,
   },
   deleteButton: {
