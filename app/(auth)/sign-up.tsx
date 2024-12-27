@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  ImageBackground,
+  StyleSheet,
+} from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 
@@ -24,78 +32,93 @@ export default function SignUp() {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        paddingHorizontal: 20,
-        backgroundColor: "white",
-      }}
+    <ImageBackground
+      source={require("../../assets/images/pic4.png")} // Adjust the path to your image
+      style={styles.backgroundImage}
+      resizeMode="cover"
     >
-      <Text
-        style={{
-          fontSize: 24,
-          fontWeight: "bold",
-          marginBottom: 20,
-          textAlign: "center",
-        }}
-      >
-        Sign Up
-      </Text>
-      <TextInput
-        placeholder="Username"
-        value={username}
-        onChangeText={setUsername}
-        style={{
-          borderWidth: 1,
-          borderRadius: 8,
-          padding: 10,
-          marginBottom: 16,
-        }}
-      />
-      <TextInput
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        style={{
-          borderWidth: 1,
-          borderRadius: 8,
-          padding: 10,
-          marginBottom: 16,
-        }}
-      />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        style={{
-          borderWidth: 1,
-          borderRadius: 8,
-          padding: 10,
-          marginBottom: 16,
-        }}
-      />
-      <TouchableOpacity
-        onPress={handleSignUp}
-        style={{
-          backgroundColor: "#3498db",
-          padding: 15,
-          borderRadius: 8,
-          alignItems: "center",
-        }}
-      >
-        <Text style={{ color: "white", fontWeight: "bold" }}>Sign Up</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => router.replace("/sign-in")}
-        style={{ marginTop: 16, alignItems: "center" }}
-      >
-        <Text style={{ color: "#3498db" }}>
-          Already have an account? Sign In
-        </Text>
-      </TouchableOpacity>
-    </View>
+      {/* Overlay */}
+      <View style={styles.overlay}>
+        <Text style={styles.title}>Sign Up</Text>
+        <TextInput
+          placeholder="Username"
+          placeholderTextColor="gray"
+          value={username}
+          onChangeText={setUsername}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Email"
+          placeholderTextColor="gray"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Password"
+          placeholderTextColor="gray"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+          style={styles.input}
+        />
+        <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => router.replace("/sign-in")}
+          style={styles.linkContainer}
+        >
+          <Text style={styles.linkText}>Already have an account? Sign In</Text>
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
   );
 }
+
+const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.7)", // Dark overlay with transparency
+    justifyContent: "center",
+    paddingHorizontal: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+    textAlign: "center",
+    color: "#EAB308", // yellow-500
+  },
+  input: {
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 16,
+    borderColor: "gray",
+    color: "#EAB308", // yellow-500
+    backgroundColor: "#2c2c2c",
+  },
+  button: {
+    backgroundColor: "#EAB308", // yellow-500
+    padding: 15,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "black",
+    fontWeight: "bold",
+  },
+  linkContainer: {
+    marginTop: 16,
+    alignItems: "center",
+  },
+  linkText: {
+    color: "#EAB308",
+  },
+});
