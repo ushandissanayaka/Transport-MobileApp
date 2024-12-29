@@ -105,6 +105,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     position: "relative",
+    borderBottomColor: "#FFD700", // Yellow color
+    borderBottomWidth: 5, // Thickness of the border
   },
   coverPhoto: {
     width: "100%",
